@@ -1,0 +1,17 @@
+---
+button:
+  pin: 12 # GPIO 18
+  countdown: 5 # in seconds
+
+flash:
+  pin: 22 # GPIO 25
+  delay: 0.1
+
+webserver:
+  host: "::"
+  port: 8080
+
+resolution:
+  preview:   640,480
+  capture:   2592,1944
+  thumbnail: 240,240

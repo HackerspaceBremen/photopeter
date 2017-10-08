@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+
+import bottle
+import yaml
+from os import listdir
+from os.path import isfile, join
+from bottle import route, run, template, static_file
+
+
+with open("config.yml", 'r') as ymlfile:
+    cfg = yaml.load(ymlfile)
+
+class App(object):
+    def index(self):
+        mypath = "images"
+        images = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+        #return static_file("index.html", root=".")
+        return template('index.tpl', images=images)
+
+    def image(self, name):
+        return static_file(name, root="images")
+
+    def static(self, name):
+        return static_file(name, root=".")
+
+
+app = App()
+route("/")(app.index)
+route("/<name:re:[a-z\.]+\.css$>")(app.static)
+route("/images/<name>")(app.image)
+run(host=cfg['webserver']['host'], port=cfg['webserver']['port'])
